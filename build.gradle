@@ -1,0 +1,75 @@
+buildscript {
+  repositories {
+mavenLocal()
+    maven {url 'http://developer.marklogic.com/maven2/'}
+  }
+  dependencies {
+    classpath 'com.marklogic:ml-data-hub:3.1.0'
+  }
+}
+
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+
+    // This plugin allows you to create different environments
+    // for your gradle deploy. Each environment is represented
+    // by a gradle-${env}.properties file
+    // See https://github.com/stevesaliman/gradle-properties-plugin
+    // specify the env on the command line with:
+    // gradle -PenvironmentName=x ...
+    id 'net.saliman.properties' version '1.4.6'
+
+    // This gradle plugin extends the ml-gradle plugin with
+    // commands that make the Data Hub Framework do its magic
+
+    id "org.jetbrains.kotlin.jvm" version "1.2.21"
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'com.marklogic.ml-data-hub'
+
+repositories {
+mavenLocal()
+    jcenter()
+    maven {url 'http://developer.marklogic.com/maven2/'}
+}
+
+dependencies {
+    // this allows you to write custom java code that depends
+    // on the Data Hub Framework library
+    compile 'com.marklogic:marklogic-data-hub:3.1.0'
+    compile 'com.marklogic:marklogic-xcc:9.0.4'
+    compile 'com.marklogic:marklogic-client-api:4.0.3.1'
+    // prototyping with kotlin tests
+    compile 'io.github.microutils:kotlin-logging:1.4.6'
+    compile "org.jetbrains.kotlin:kotlin-stdlib"
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0"
+    compile group: 'com.fasterxml.jackson.jaxrs', name: 'jackson-jaxrs-xml-provider', version: '2.9.0'
+    compile 'io.github.microutils:kotlin-logging:1.4.6'
+    testCompile group: 'io.codearte.jfairy', name: 'jfairy', version: '0.5.9'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+task getCustomerHistory(type: JavaExec) {
+    ext.role = project.findProperty('role') ?: 'clerk'
+    ext.customerName = project.findProperty('customerName') ?: 'noOne'
+    main = 'com.marklogic.example.loan.LoanHistoryTest'
+    args = [ext.role, ext.customerName]
+    classpath = sourceSets.test.runtimeClasspath
+}
+
+task getCustomerHistoryBySSN(type: JavaExec) {
+    ext.role = project.findProperty('role') ?: 'clerk'
+    ext.ssn = project.findProperty('ssn') ?: 'none'
+    main = 'com.marklogic.example.loan.LoanHistoryBySSNTest'
+    args = [ext.role, ext.ssn]
+    classpath = sourceSets.test.runtimeClasspath
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}

@@ -1,0 +1,34 @@
+{
+  "info" : {
+    "title" : "Informant",
+    "version" : "0.0.1",
+    "baseUri" : "http://example.org/supportcall/"
+  },
+  "definitions" : {
+    "Informant" : {
+      "description" : "An Informant",
+      "required" : [ "fullName" ],
+      "pii" : [ "secrets" ],
+        "primaryKey":"id",
+      "elementRangeIndex" : [ ],
+      "rangeIndex" : [ ],
+      "wordLexicon" : [ "fullName" ],
+      "properties" : {
+        "id" : {
+          "datatype" : "string",
+          "description" : "A key"
+        },
+        "fullName" : {
+          "datatype" : "string",
+          "description" : "The full name of a customer"
+        },
+        "secrets" : {
+          "datatype" : "array",
+          "description" : "The company for whom the customer works.",
+            "items": { "datatype": "string" }
+        }
+      }
+    }
+  }
+}
+
