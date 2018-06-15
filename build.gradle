@@ -1,13 +1,3 @@
-buildscript {
-  repositories {
-mavenLocal()
-    maven {url 'http://developer.marklogic.com/maven2/'}
-  }
-  dependencies {
-    classpath 'com.marklogic:ml-data-hub:3.1.0'
-  }
-}
-
 plugins {
     id 'java'
     id 'eclipse'
@@ -23,12 +13,12 @@ plugins {
 
     // This gradle plugin extends the ml-gradle plugin with
     // commands that make the Data Hub Framework do its magic
+    id 'com.marklogic.ml-data-hub' version '3.0.0'
 
     id "org.jetbrains.kotlin.jvm" version "1.2.21"
 }
 
 apply plugin: 'kotlin'
-apply plugin: 'com.marklogic.ml-data-hub'
 
 repositories {
 mavenLocal()
@@ -39,7 +29,7 @@ mavenLocal()
 dependencies {
     // this allows you to write custom java code that depends
     // on the Data Hub Framework library
-    compile 'com.marklogic:marklogic-data-hub:3.1.0'
+    compile 'com.marklogic:marklogic-data-hub:3.0.0'
     compile 'com.marklogic:marklogic-xcc:9.0.4'
     compile 'com.marklogic:marklogic-client-api:4.0.3.1'
     // prototyping with kotlin tests
